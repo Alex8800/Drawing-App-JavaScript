@@ -22,114 +22,158 @@ function drawLetter(matrix) {
 
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const randomLetterInput = document.getElementById("random-letter");
-const generateBtn = document.getElementById("generate-btn");
+const level1Btn = document.getElementById("level1-btn");
 
+/*
 const canvas2 = document.getElementById("canvas2");
 const ctx2 = canvas2.getContext("2d");
 canvas2.width = 450; // sau orice altă valoare de lățime dorită
 canvas2.height = 450; // sau orice altă valoare de înălțime dorită
+*/
 
 // Create an array of image URLs
 const imageUrls = [
-    "letter-images/Aimage.jpg",
-    "letter-images/Bimage.jpg",
-    "letter-images/Cimage.jpg",
-    "letter-images/Dimage.jpg",
-    "letter-images/Eimage.jpg",
-    "letter-images/Fimage.jpg",
-    "letter-images/Gimage.jpg",
-    "letter-images/Himage.jpg",
-    "letter-images/Iimage.jpg",
-    "letter-images/Jimage.jpg",
-    "letter-images/Kimage.jpg",
-    "letter-images/Limage.jpg",
-    "letter-images/Mimage.jpg",
-    "letter-images/Nimage.jpg",
-    "letter-images/Oimage.jpg",
-    "letter-images/Pimage.jpg",
-    "letter-images/Qimage.jpg",
-    "letter-images/Rimage.jpg",
-    "letter-images/Simage.jpg",
-    "letter-images/Timage.jpg",
-    "letter-images/Uimage.jpg",
-    "letter-images/Vimage.jpg",
-    "letter-images/Wimage.jpg",
-    "letter-images/Ximage.jpg",
-    "letter-images/Yimage.jpg",
-    "letter-images/Zimage.jpg",
+    "letter-images/Aimage.png",
+    "letter-images/Bimage.png",
+    "letter-images/Cimage.png",
+    "letter-images/Dimage.png",
+    "letter-images/Eimage.png",
+    "letter-images/Fimage.png",
+    "letter-images/Gimage.png",
+    "letter-images/Himage.png",
+    "letter-images/Iimage.png",
+    "letter-images/Jimage.png",
+    "letter-images/Kimage.png",
+    "letter-images/Limage.png",
+    "letter-images/Mimage.png",
+    "letter-images/Nimage.png",
+    "letter-images/Oimage.png",
+    "letter-images/Pimage.png",
+    "letter-images/Qimage.png",
+    "letter-images/Rimage.png",
+    "letter-images/Simage.png",
+    "letter-images/Timage.png",
+    "letter-images/Uimage.png",
+    "letter-images/Vimage.png",
+    "letter-images/Wimage.png",
+    "letter-images/Ximage.png",
+    "letter-images/Yimage.png",
+    "letter-images/Zimage.png",
 ];
+
+// Create an array of Image objects
+// Get the container element
+let imagesContainer = document.getElementById('images-container');
 
 // Create an array of Image objects
 const images = imageUrls.map((url) => {
     const img = new Image();
     img.src = url;
+
+    quadrantHeight = imagesContainer.style.height / 2;
+    quadrantWidth = imagesContainer.style.width / 2;
+
+
+    // Add an event listener to scale the image when it loads
+    img.addEventListener('load', () => {
+        img.style.width = `${quadrantWidth}px`;
+        img.style.height = `${quadrantHeight}px`;
+        console.log(quadrantHeight);
+
+    });
+
     return img;
 });
-generateBtn.addEventListener("click", function () {
+level1Btn.addEventListener("click", function () {
+
+    // Clear the imagesContainer before generating new images
+    while (imagesContainer.firstChild) {
+        imagesContainer.removeChild(imagesContainer.lastChild);
+    }
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     const randomIndex = Math.floor(Math.random() * alphabet.length);
     const randomLetter = alphabet[randomIndex];
     randomLetterInput.value = randomLetter;
 
+    /*
     // Calculate the width and height of each quadrant
     ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
     const quadrantWidth = canvas2.width / 2;
     const quadrantHeight = canvas2.height / 2;
+    */
 
-    // Choose a random image from the array
-    const randomImageIndex1 = Math.floor(Math.random() * images.length);
+    // Choose radndom images from the array
+    let randomImageIndex1, randomImageIndex2, randomImageIndex3;
+
+    do {
+        randomImageIndex1 = Math.floor(Math.random() * images.length);
+        randomImageIndex2 = Math.floor(Math.random() * images.length);
+        randomImageIndex3 = Math.floor(Math.random() * images.length);
+    } while (randomImageIndex1 === randomImageIndex2 ||
+    randomImageIndex1 === randomImageIndex3 ||
+    randomImageIndex2 === randomImageIndex3 ||
+    randomImageIndex1 === randomIndex ||
+    randomImageIndex2 === randomIndex ||
+        randomImageIndex3 === randomIndex);
+
     const randomImage1 = images[randomImageIndex1];
-    // Draw the image on each quadrant of the canvas
-    ctx2.drawImage(randomImage1, 0, 0, quadrantWidth, quadrantHeight);
-
-    //Choose a random image from the array
-    const randomImageIndex2 = Math.floor(Math.random() * images.length);
     const randomImage2 = images[randomImageIndex2];
-    // Draw the image on each quadrant of the canvas
-    ctx2.drawImage(randomImage2, quadrantWidth, 0, quadrantWidth, quadrantHeight);
-
-    // Choose a random image from the array
-    const randomImageIndex3 = Math.floor(Math.random() * images.length);
     const randomImage3 = images[randomImageIndex3];
-    // Draw the image on each quadrant of the canvas
-    ctx2.drawImage(
-        randomImage3,
-        0,
-        quadrantHeight,
-        quadrantWidth,
-        quadrantHeight
-    );
+    const goodImage4 = images[randomIndex];
 
-    // Choose a random image from the array
-    const randomImageIndex4 = Math.floor(Math.random() * images.length);
-    const randomImage4 = images[randomImageIndex4];
-    // Draw the image on each quadrant of the canvas
-    ctx2.drawImage(
-        randomImage4,
-        quadrantWidth,
-        quadrantHeight,
-        quadrantWidth,
-        quadrantHeight
-    );
+    let randomImages = [randomImage1, randomImage2, randomImage3, goodImage4];
 
-    let selectedImage;
+    //shuffle random images
+    randomImages = shuffle(randomImages);
 
-    canvas2.addEventListener("click", function (event) {
-        const rect = canvas2.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
-
-        // Verificați în care pătrat a fost făcut clic și păstrați imaginea corespunzătoare într-o variabilă.
-        if (x < canvas2.width / 2 && y < canvas2.height / 2) {
-            selectedImage = randomImage1;
-        } else if (x >= canvas2.width / 2 && y < canvas2.height / 2) {
-            selectedImage = randomImage2;
-        } else if (x < canvas2.width / 2 && y >= canvas2.height / 2) {
-            selectedImage = randomImage3;
-        } else {
-            selectedImage = randomImage4;
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
         }
-    });
+        return array;
+    }
+
+    quadrantHeight = imagesContainer.style.height / 2;
+    quadrantWidth = imagesContainer.style.width / 2;
+    for (let i = 0; i < 4; i++) {
+        let x, y;
+        if (i == 0) {
+            x = 0;
+            y = 0;
+        } else if (i == 1) {
+            x = quadrantWidth;
+            y = 0;
+        } else if (i == 2) {
+            x = 0;
+            y = quadrantHeight;
+        } else {
+            x = quadrantWidth;
+            y = quadrantHeight;
+        }
+
+        const img = document.createElement("img");
+        img.src = randomImages[i].src;
+        img.addEventListener("mouseenter", () => {
+          img.style.border = "2px solid red"; // Change border to red when mouse enters
+        });
+        img.addEventListener("mouseleave", () => {
+          img.style.border = ""; // Remove border when mouse leaves
+        });
+
+        img.addEventListener("click", () => {
+            if (randomImages[i] === goodImage4) {
+                console.log("correct");
+            } else {
+                console.log("incorrect");
+            }
+        });
+
+        img.className = "image";
+        imagesContainer.appendChild(img);
+
+    }
+
     // Desenam litera generata pe canvas
     switch (randomLetter) {
         case "A":
