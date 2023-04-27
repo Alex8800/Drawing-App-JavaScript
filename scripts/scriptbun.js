@@ -180,6 +180,9 @@ clearCanvas.addEventListener("click", () => {
   //clearRect() este o metodă care șterge o regiune rectangulară specificată de coordonatele de sus-stânga și jos-dreapta.
   //0, 0 sunt coordonatele pentru colțul de sus-stânga al canvas-ului, iar canvas.width, canvas.height sunt dimensiunile canvas-ului, astfel încât regiunea specificată este întreaga suprafață a canvas-ului.
   setCanvasBackground();
+  while (imagesContainer.firstChild) {
+    imagesContainer.removeChild(imagesContainer.lastChild);
+  }
   desen = [];
 });
 
@@ -289,15 +292,15 @@ function removeLastSrtoke() {
 canvas.addEventListener("mousedown", startDraw); //Acesta este un eveniment care se declanșează atunci când utilizatorul apasă butonul mouse-ului pe suprafața canvas. Funcția startDraw este apelată ca răspuns la acest eveniment.
 canvas.addEventListener("mousemove", drawing); //Acesta este un eveniment care se declanșează atunci când utilizatorul mișcă mouse-ul pe suprafața canvas. Funcția drawing este apelată ca răspuns la acest eveniment.
 canvas.addEventListener("mouseup", () =>
-  //Acesta este un eveniment care se declanșează atunci când utilizatorul ridică butonul mouse-ului de pe suprafața canvas. În acest caz, o funcție anonimă este definită ca răspuns la eveniment.
-  {
-    isDrawing = false; //utilizatorul nu mai trasează
-    if (selectedTool === "brush" || selectedTool === "eraser") {
-      straightenLine();
-    } else {
-      desen.push(ultimulDesen);
-    }
-    ultimulDesen = [];
+//Acesta este un eveniment care se declanșează atunci când utilizatorul ridică butonul mouse-ului de pe suprafața canvas. În acest caz, o funcție anonimă este definită ca răspuns la eveniment.
+{
+  isDrawing = false; //utilizatorul nu mai trasează
+  if (selectedTool === "brush" || selectedTool === "eraser") {
+    straightenLine();
+  } else {
+    desen.push(ultimulDesen);
   }
+  ultimulDesen = [];
+}
 );
 
